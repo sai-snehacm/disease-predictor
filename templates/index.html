@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disease Predictor</title>
+
+    <!-- ✅ Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Disease Prediction Based on Symptoms</h2>
+
+    <form method="POST">
+        <!-- ✅ Modern Multi-Select Dropdown -->
+        <label for="symptoms">Select Symptoms:</label><br>
+        <select class="js-example-basic-multiple" name="symptoms" multiple="multiple">
+            {% for symptom in symptoms %}
+                <option value="{{ symptom }}">{{ symptom }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction %}
+        <h3>Predicted Disease: {{ prediction }}</h3>
+        <p><strong>Description:</strong> {{ description }}</p>
+        {% if precautions %}
+            <p><strong>Precautions:</strong></p>
+            <ul>
+                {% for p in precautions %}
+                    <li>{{ p }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endif %}
+
+    <!-- ✅ jQuery + Select2 JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({
+                placeholder: "Type or select symptoms...",
+                allowClear: true
+            });
+        });
+    </script>
+</body>
+</html>
