@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disease Predictor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        form {
+            margin-bottom: 30px;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .checkbox-grid label {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background: #ecf0f1;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .checkbox-grid label:hover {
+            background: #d0e4f1;
+        }
+
+        .checkbox-grid input {
+            margin-right: 10px;
+        }
+
+        button {
+            display: block;
+            background-color: #3498db;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px auto 0;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        h3 {
+            color: #27ae60;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        p, ul {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        .message {
+            text-align: center;
+            color: red;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Disease Prediction Based on Symptoms</h2>
+        <form method="POST">
+            <div class="checkbox-grid">
+                {% for symptom in symptoms %}
+                    <label>
+                        <input type="checkbox" name="symptoms" value="{{ symptom }}">
+                        {{ symptom }}
+                    </label>
+                {% endfor %}
+            </div>
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction == "Please select at least one symptom." %}
+            <div class="message">{{ prediction }}</div>
+        {% elif prediction %}
+            <h3>Predicted Disease: {{ prediction }}</h3>
+            <p><strong>Description:</strong> {{ description }}</p>
+            {% if precautions %}
+                <p><strong>Precautions:</strong></p>
+                <ul>
+                    {% for p in precautions %}
+                        <li>{{ p }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endif %}
+
+        <footer>
+            &copy; 2025 Disease Predictor | Sneha CM
+        </footer>
+    </div>
+</body>
+</html>

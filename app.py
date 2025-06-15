@@ -7,7 +7,7 @@ app = Flask(__name__)
 # Load model and helper objects
 model = joblib.load("model.pkl")
 le = joblib.load("label_encoder.pkl")
-symptom_list = joblib.load("symptom_list.pkl")
+symptom_list = joblib.load("symptom_list.pkl")  # Full symptom list used in training
 
 # Load disease information
 desc_df = pd.read_csv("symptom_Description.csv")
@@ -23,24 +23,23 @@ def index():
         selected_symptoms = request.form.getlist("symptoms")
 
         if selected_symptoms:
-            # Vector for the model
+            # Create binary input vector (1 if symptom is selected, else 0)
             input_vector = [1 if symptom in selected_symptoms else 0 for symptom in symptom_list]
 
-            # Make prediction
+            # Model prediction
             pred = model.predict([input_vector])[0]
             prediction = le.inverse_transform([pred])[0]
 
-            # Get description
+            # Get disease description
             desc_row = desc_df[desc_df["Disease"].str.lower() == prediction.lower()]
             if not desc_row.empty:
                 description = desc_row.iloc[0]["Description"]
             else:
                 description = "No description available."
 
-            # Get precautions
+            # Get disease precautions
             precaution_row = precaution_df[precaution_df["Disease"].str.lower() == prediction.lower()]
             if not precaution_row.empty:
-                # Exclude "Disease" column and filter out null values
                 precautions = precaution_row.iloc[0][1:].dropna().tolist()
             else:
                 precautions = ["No specific precautions found."]
