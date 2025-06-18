@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Final Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .button-group {
+            margin-top: 20px;
+        }
+
+        .button-group a {
+            text-decoration: none;
+            padding: 10px 15px;
+            background-color: #1976d2;
+            color: white;
+            border-radius: 5px;
+            margin-right: 10px;
+            display: inline-block;
+        }
+
+        .button-group a:hover {
+            background-color: #0d47a1;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>📝 Final Prediction Report</h2>
+
+    <p><strong>Selected Symptoms:</strong> {{ data.symptoms | join(', ') }}</p>
+    <p><strong>Predicted Disease:</strong> {{ data.prediction }}</p>
+    <p><strong>Confidence:</strong> {{ data.confidence }}%</p>
+    <p><strong>Description:</strong> {{ data.description }}</p>
+
+    <p><strong>Precautions:</strong></p>
+    <ul>
+        {% for p in data.precautions %}
+            <li>{{ p }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if not download_mode %}
+    <div class="button-group">
+        <a href="{{ url_for('predict') }}">🔁 New Prediction</a>
+        <a href="{{ url_for('logout') }}">🚪 Logout</a>
+        <a href="{{ url_for('download') }}">⬇️ Download PDF</a>
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>

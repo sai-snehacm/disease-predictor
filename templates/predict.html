@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disease Predictor</title>
+    
+    <!-- ✅ Link custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- ✅ Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        /* Extra tweaks for Select2 and layout */
+        .select2-container--default .select2-selection--multiple {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
+            min-height: 40px;
+        }
+
+        select {
+            width: 100%;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e6ffe6;
+            border-left: 5px solid green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Disease Prediction Based on Symptoms</h2>
+
+    <form method="POST">
+        <!-- ✅ Modern Multi-Select Dropdown -->
+        <label for="symptoms">Select Symptoms:</label>
+        <select class="js-example-basic-multiple" name="symptoms" multiple="multiple">
+            {% for symptom in symptoms %}
+                <option value="{{ symptom }}">{{ symptom }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction %}
+        <div class="result">
+            <p><strong>Predicted Disease:</strong> {{ prediction }}</p>
+
+            {% if confidence %}
+                <p><strong>Confidence:</strong> {{ confidence }}%</p>
+            {% endif %}
+
+            <p><strong>Description:</strong> {{ description }}</p>
+
+            {% if precautions %}
+                <p><strong>Precautions:</strong></p>
+                <ul>
+                    {% for p in precautions %}
+                        <li>{{ p }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<!-- ✅ jQuery + Select2 JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2({
+            placeholder: "Type or select symptoms...",
+            allowClear: true
+        });
+    });
+</script>
+</body>
+</html>
